@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Toolbar from "./components/Toolbar/Toolbar";
 import AdminPage from "./containers/Admin/AdminPage";
 import Page from "./containers/Page/Page";
+import CreatePage from "./containers/Create/CreatePage";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Page />} />
           <Route path="/pages/:id" element={<Page />} />
+          <Route path="/new-page" element={<CreatePage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route
             path="*"

@@ -23,8 +23,11 @@ const Toolbar = () => {
             <NavLink className="nav-link" to="pages/contacts">
               Contacts
             </NavLink>
+            <NavLink className="nav-link" to="/new-page">
+              Add new page
+            </NavLink>
             <NavLink className="nav-link" to="/admin">
-              Admin
+              Edit page
             </NavLink>
           </Nav>
         </Navbar.Collapse>
