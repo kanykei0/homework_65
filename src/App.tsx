@@ -11,8 +11,9 @@ function App() {
       </header>
       <main className="container">
         <Routes>
-          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/" element={<Page />} />
           <Route path="/pages/:id" element={<Page />} />
+          <Route path="/admin" element={<AdminPage />} />
           <Route
             path="*"
             element={

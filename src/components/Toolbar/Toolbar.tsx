@@ -7,7 +7,9 @@ const Toolbar = () => {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
-        <Navbar.Brand href="#">Bla Bla</Navbar.Brand>
+        <NavLink className="navbar-brand" to="/">
+          Bla Bla
+        </NavLink>
         <Navbar.Toggle />
         <Navbar.Collapse id="navbarScroll">
           <Nav

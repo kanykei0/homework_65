@@ -9,11 +9,12 @@ const Page = () => {
   const [content, setContent] = useState<Page | null>(null);
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
+  const home = "pages/home.json";
 
   const fetchPage = async () => {
     try {
       setLoading(true);
-      const response = await axiosApi.get(`pages/${id}.json`);
+      const response = await axiosApi.get(id ? `pages/${id}.json` : home);
       setContent(response.data);
     } finally {
       setLoading(false);
