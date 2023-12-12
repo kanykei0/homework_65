@@ -1,7 +1,6 @@
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import React, { useEffect, useState } from "react";
-import { NewPage } from "../../type";
 import { useNavigate } from "react-router-dom";
 import axiosApi from "../../axiosApi";
 
@@ -13,10 +12,19 @@ const AdminPage: React.FC<Props> = ({ isEdit = true }) => {
   const [content, setContent] = useState(
     isEdit ? { title: "", text: "" } : { id: "", title: "", text: "" }
   );
-
-  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState<string>();
+  const [pages, setPages] = useState<string[]>([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axiosApi.get("pages.json");
+      const pageKeys = Object.keys(response.data);
+      setPages(pageKeys);
+    };
+
+    fetchData();
+  }, []);
 
   const onChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -44,36 +52,25 @@ const AdminPage: React.FC<Props> = ({ isEdit = true }) => {
 
   const formSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    try {
-      setLoading(true);
-      if (isEdit) {
-        await axiosApi.put(`pages/${currentPage}.json`, content);
-        navigate(`/pages/${currentPage}`);
-      } else {
-        const newPage: NewPage = {
-          [content.id || ""]: {
-            title: content.title,
-            text: content.text,
-          },
-        };
 
-        await axiosApi.put(`pages/${content.id}.json`, newPage);
-        navigate("/pages");
-      }
-    } finally {
-      setLoading(false);
+    if (isEdit) {
+      await axiosApi.put(`pages/${currentPage}.json`, content);
+      navigate(`/pages/${currentPage}`);
+    } else {
+      const newPage = {
+        title: content.title,
+        text: content.text,
+      };
+
+      await axiosApi.put(`pages/${content.id}.json`, newPage);
+      navigate("/");
     }
   };
 
   const getPageData = async () => {
-    try {
-      setLoading(true);
-      if (isEdit) {
-        const response = await axiosApi.get(`pages/${currentPage}.json`);
-        setContent(response.data);
-      }
-    } finally {
-      setLoading(false);
+    if (isEdit) {
+      const response = await axiosApi.get(`pages/${currentPage}.json`);
+      setContent(response.data);
     }
   };
 
@@ -91,10 +88,11 @@ const AdminPage: React.FC<Props> = ({ isEdit = true }) => {
         required
         onChange={(e) => setCurrentPage(e.target.value)}
       >
-        <option value="">Select page</option>
-        <option value="home">Home</option>
-        <option value="about">About</option>
-        <option value="contacts">Contacts</option>
+        {pages.map((page, index) => (
+          <option key={index} value={page}>
+            {page}
+          </option>
+        ))}
       </select>
     </div>
   ) : (
